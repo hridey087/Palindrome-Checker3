@@ -1,4 +1,4 @@
 # PalindromeCheckerApp
-USE CASE 3git status
+USE CASE 4 git statusgit status
 Palindrome Checker
 Language- java
