@@ -4,33 +4,44 @@ public class PalindromeChecker {
 
 
 
-        public static void main(String[] args) {
+        // Public method to check palindrome
+        public boolean checkPalindrome(String input) {
+            if (input == null) return false;
 
-            String text = "A man a plan a canal Panama";
+            // Normalize input: remove spaces and convert to lowercase
+            String normalized = input.replaceAll("\\s+", "").toLowerCase();
 
-            // Step 1: Normalize string
-            String normalized = text.replaceAll("\\s+", "")   // Remove spaces
-                    .toLowerCase();           // Convert to lowercase
-
-            // Step 2: Apply two-pointer logic
+            // Two-pointer palindrome check
             int left = 0;
             int right = normalized.length() - 1;
-            boolean isPalindrome = true;
-
             while (left < right) {
                 if (normalized.charAt(left) != normalized.charAt(right)) {
-                    isPalindrome = false;
-                    break;
+                    return false;
                 }
                 left++;
                 right--;
             }
+            return true;
+        }
 
-            // Step 3: Print result
-            if (isPalindrome) {
-                System.out.println("\"" + text + "\" is a Palindrome (ignoring case & spaces).");
-            } else {
-                System.out.println("\"" + text + "\" is NOT a Palindrome.");
+        // Main method to test the checker
+        public static void main(String[] args) {
+            PalindromeChecker checker = new PalindromeChecker();
+
+            String[] testStrings = {
+                    "Madam",
+                    "A man a plan a canal Panama",
+                    "Hello",
+                    "Racecar",
+                    "No lemon no melon"
+            };
+
+            for (String text : testStrings) {
+                if (checker.checkPalindrome(text)) {
+                    System.out.println("\"" + text + "\" is a Palindrome.");
+                } else {
+                    System.out.println("\"" + text + "\" is NOT a Palindrome.");
+                }
             }
         }
     }
