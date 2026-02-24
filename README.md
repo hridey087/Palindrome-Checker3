@@ -1,4 +1,4 @@
 # PalindromeCheckerApp
-USE CASE 9
+USE CASE 10
 Palindrome Checker
 Language- java
