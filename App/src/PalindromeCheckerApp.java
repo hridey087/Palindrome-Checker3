@@ -1,34 +1,72 @@
-import java.util.Deque;
-import java.util.LinkedList;
+
 
 public class PalindromeChecker {
 
 
+        // Node class for Singly Linked List
+        static class Node {
+            char data;
+            Node next;
+
+            Node(char data) {
+                this.data = data;
+                this.next = null;
+            }
+        }
 
         public static void main(String[] args) {
 
-            // Hardcoded string
-            String text = "refer";
+            String text = "level";
 
-            // Create Deque
-            Deque<Character> deque = new LinkedList<>();
+            // Step 1: Convert string to linked list
+            Node head = null;
+            Node tail = null;
 
-            // Insert characters into deque
             for (int i = 0; i < text.length(); i++) {
-                deque.addLast(text.charAt(i));   // Insert at rear
+                Node newNode = new Node(text.charAt(i));
+
+                if (head == null) {
+                    head = newNode;
+                    tail = newNode;
+                } else {
+                    tail.next = newNode;
+                    tail = newNode;
+                }
             }
+
+            // Step 2: Find middle using fast & slow pointers
+            Node slow = head;
+            Node fast = head;
+
+            while (fast != null && fast.next != null) {
+                slow = slow.next;
+                fast = fast.next.next;
+            }
+
+            // Step 3: Reverse second half (in-place)
+            Node prev = null;
+            Node current = slow;
+
+            while (current != null) {
+                Node nextNode = current.next;
+                current.next = prev;
+                prev = current;
+                current = nextNode;
+            }
+
+            // Step 4: Compare first half and reversed second half
+            Node firstHalf = head;
+            Node secondHalf = prev;
 
             boolean isPalindrome = true;
 
-            // Compare front and rear
-            while (deque.size() > 1) {
-                char front = deque.removeFirst();  // Remove from front
-                char rear = deque.removeLast();    // Remove from rear
-
-                if (front != rear) {
+            while (secondHalf != null) {
+                if (firstHalf.data != secondHalf.data) {
                     isPalindrome = false;
                     break;
                 }
+                firstHalf = firstHalf.next;
+                secondHalf = secondHalf.next;
             }
 
             // Print result
