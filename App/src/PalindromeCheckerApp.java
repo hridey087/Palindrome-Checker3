@@ -4,34 +4,33 @@ public class PalindromeChecker {
 
 
 
-
         public static void main(String[] args) {
 
-            String text = "madam";
+            String text = "A man a plan a canal Panama";
 
-            boolean isPalindrome = checkPalindrome(text, 0, text.length() - 1);
+            // Step 1: Normalize string
+            String normalized = text.replaceAll("\\s+", "")   // Remove spaces
+                    .toLowerCase();           // Convert to lowercase
 
+            // Step 2: Apply two-pointer logic
+            int left = 0;
+            int right = normalized.length() - 1;
+            boolean isPalindrome = true;
+
+            while (left < right) {
+                if (normalized.charAt(left) != normalized.charAt(right)) {
+                    isPalindrome = false;
+                    break;
+                }
+                left++;
+                right--;
+            }
+
+            // Step 3: Print result
             if (isPalindrome) {
-                System.out.println("\"" + text + "\" is a Palindrome.");
+                System.out.println("\"" + text + "\" is a Palindrome (ignoring case & spaces).");
             } else {
                 System.out.println("\"" + text + "\" is NOT a Palindrome.");
             }
-        }
-
-        // Recursive method
-        public static boolean checkPalindrome(String str, int left, int right) {
-
-            // Base condition
-            if (left >= right) {
-                return true;
-            }
-
-            // If mismatch found
-            if (str.charAt(left) != str.charAt(right)) {
-                return false;
-            }
-
-            // Recursive call (check inner substring)
-            return checkPalindrome(str, left + 1, right - 1);
         }
     }
