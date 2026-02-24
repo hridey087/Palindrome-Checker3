@@ -1,47 +1,95 @@
 
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Stack;
 
-public class PalindromeChecker {
 
 
 
-        // Public method to check palindrome
-        public boolean checkPalindrome(String input) {
-            if (input == null) return false;
+    // 1️⃣ Strategy Interface
+    interface PalindromeStrategy {
+        boolean check(String text);
+    }
 
-            // Normalize input: remove spaces and convert to lowercase
-            String normalized = input.replaceAll("\\s+", "").toLowerCase();
+    // 2️⃣ Stack-based Strategy
+    class StackStrategy implements PalindromeStrategy {
+        @Override
+        public boolean check(String text) {
+            if (text == null) return false;
+            text = text.replaceAll("\\s+", "").toLowerCase();
+            Stack<Character> stack = new Stack<>();
+            for (char c : text.toCharArray()) stack.push(c);
+            for (char c : text.toCharArray()) {
+                if (stack.pop() != c) return false;
+            }
+            return true;
+        }
+    }
 
-            // Two-pointer palindrome check
-            int left = 0;
-            int right = normalized.length() - 1;
+    // 3️⃣ Deque-based Strategy
+    class DequeStrategy implements PalindromeStrategy {
+        @Override
+        public boolean check(String text) {
+            if (text == null) return false;
+            text = text.replaceAll("\\s+", "").toLowerCase();
+            Deque<Character> deque = new LinkedList<>();
+            for (char c : text.toCharArray()) deque.addLast(c);
+            while (deque.size() > 1) {
+                if (deque.removeFirst() != deque.removeLast()) return false;
+            }
+            return true;
+        }
+    }
+
+    // 4️⃣ Two-pointer Strategy
+    class TwoPointerStrategy implements PalindromeStrategy {
+        @Override
+        public boolean check(String text) {
+            if (text == null) return false;
+            text = text.replaceAll("\\s+", "").toLowerCase();
+            int left = 0, right = text.length() - 1;
             while (left < right) {
-                if (normalized.charAt(left) != normalized.charAt(right)) {
-                    return false;
-                }
+                if (text.charAt(left) != text.charAt(right)) return false;
                 left++;
                 right--;
             }
             return true;
         }
+    }
 
-        // Main method to test the checker
+    // 5️⃣ Context class
+    class PalindromeCheckerContext {
+        private PalindromeStrategy strategy;
+
+        public PalindromeCheckerContext(PalindromeStrategy strategy) {
+            this.strategy = strategy;
+        }
+
+        public void setStrategy(PalindromeStrategy strategy) {
+            this.strategy = strategy;
+        }
+
+        public boolean check(String text) {
+            return strategy.check(text);
+        }
+    }
+
+    // 6️⃣ Client / Main Application
+    public class PalindromeChecker {
         public static void main(String[] args) {
-            PalindromeChecker checker = new PalindromeChecker();
 
-            String[] testStrings = {
-                    "Madam",
-                    "A man a plan a canal Panama",
-                    "Hello",
-                    "Racecar",
-                    "No lemon no melon"
-            };
+            String text = "A man a plan a canal Panama";
 
-            for (String text : testStrings) {
-                if (checker.checkPalindrome(text)) {
-                    System.out.println("\"" + text + "\" is a Palindrome.");
-                } else {
-                    System.out.println("\"" + text + "\" is NOT a Palindrome.");
-                }
-            }
+            // Use Stack Strategy
+            PalindromeCheckerContext context = new PalindromeCheckerContext(new StackStrategy());
+            System.out.println("Stack Strategy: " + (context.check(text) ? "Palindrome" : "Not Palindrome"));
+
+            // Switch to Deque Strategy at runtime
+            context.setStrategy(new DequeStrategy());
+            System.out.println("Deque Strategy: " + (context.check(text) ? "Palindrome" : "Not Palindrome"));
+
+            // Switch to Two-Pointer Strategy
+            context.setStrategy(new TwoPointerStrategy());
+            System.out.println("Two-Pointer Strategy: " + (context.check(text) ? "Palindrome" : "Not Palindrome"));
         }
     }
