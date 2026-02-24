@@ -4,24 +4,35 @@ public class PalindromeChecker {
 
 
 
+
         public static void main(String[] args) {
 
-            // Original string (hardcoded)
-            String original = "racecar";
+            // Hardcoded string
+            String text = "level";
 
-            // Variable to store reversed string
-            String reversed = "";
+            // Convert String to character array
+            char[] characters = text.toCharArray();
 
-            // Reverse using for loop
-            for (int i = original.length() - 1; i >= 0; i--) {
-                reversed = reversed + original.charAt(i);
+            // Two-pointer approach
+            int left = 0;
+            int right = characters.length - 1;
+
+            boolean isPalindrome = true;
+
+            while (left < right) {
+                if (characters[left] != characters[right]) {
+                    isPalindrome = false;
+                    break;
+                }
+                left++;
+                right--;
             }
 
-            // Compare using equals() method
-            if (original.equals(reversed)) {
-                System.out.println("\"" + original + "\" is a Palindrome.");
+            // Display result
+            if (isPalindrome) {
+                System.out.println("\"" + text + "\" is a Palindrome.");
             } else {
-                System.out.println("\"" + original + "\" is NOT a Palindrome.");
+                System.out.println("\"" + text + "\" is NOT a Palindrome.");
             }
         }
     }
